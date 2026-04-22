@@ -1,0 +1,22 @@
+spark-shell << 'EOF'
+import org.apache.spark.sql.SparkSession
+val spark = SparkSession.builder().appName("BigDataAnalyticsI").master("local[*]").getOrCreate()
+spark.sparkContext.setLogLevel("WARN")
+println("\n========================================")
+println("Big Data Analytics I - Spark Example")
+println("========================================\n")
+val data = Seq(("Alice", 25, "Engineering"), ("Bob", 30, "Finance"), ("Charlie", 28, "Marketing"), ("David", 35, "Engineering"), ("Eve", 27, "Finance"))
+val df = spark.createDataFrame(data).toDF("Name", "Age", "Department")
+println("Example 1: Creating a DataFrame")
+df.show()
+println("Example 2: Filtering data (Age > 28)")
+df.filter(df("Age") > 28).show()
+println("Example 3: Group by Department")
+df.groupBy("Department").count().show()
+println("Example 4: Average age by Department")
+df.groupBy("Department").agg(Map("Age" -> "avg")).show()
+println("\n========================================")
+println("Example completed successfully!")
+println("========================================\n")
+spark.stop()
+EOF
